@@ -1,23 +1,22 @@
-import React, {useState} from 'react';
-import {SafeAreaView, Text, TextInput, Button} from 'react-native';
-import FlatButton from '../custom/Button';
-import { getAuth,createUserWithEmailAndPassword } from 'firebase/auth';
+import { SafeAreaView, Text, TextInput, Button, Alert } from 'react-native';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebaseconfig';
 import { globalStyles } from '../styles/globalStyles';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 
-export default function SignUp( {navigation} ) {
+export default function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
 
   const handleSignUp = () => {
     createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
+    .then(() => {
       // Signed in 
-      const user = userCredential.user;
+      // const user = userCredential.user;
     })
-    .catch((error) => alert(error.message))
+    .catch((error) => Alert.alert(error.message))
   };
 
   return (

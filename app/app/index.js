@@ -4,16 +4,17 @@ import { globalStyles } from '../styles/globalStyles';
 import FlatButton from '../custom/Button';
 import { auth } from '../firebaseconfig';
 import { signInWithEmailAndPassword } from "firebase/auth"; 
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 
 export default function Login( {navigation} ) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
-        navigation.navigate('Inputs')
+        router.replace("/inputs")
       } 
     })
     return unsubscribe
