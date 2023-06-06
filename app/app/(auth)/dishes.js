@@ -12,6 +12,9 @@ export default function Dishes() {
       <FlatButton text = {'Reviews'} invert = {'n'} 
         onPress={() => {router.replace('/review')}}
         />
+      <FlatButton text = {'Back'} invert = {'n'} 
+        onPress={() => router.replace('/inputs')}
+        />
     </SafeAreaView>
   );
 }

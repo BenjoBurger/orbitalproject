@@ -6,7 +6,7 @@ import { auth } from '../firebaseconfig';
 import { signInWithEmailAndPassword } from "firebase/auth"; 
 import { Link, useRouter } from 'expo-router';
 
-export default function Login( {navigation} ) {
+export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
@@ -68,14 +68,18 @@ export default function Login( {navigation} ) {
           />
 
         <FlatButton text={'Sign In'} onPress={handleLogin} invert={'n'}/>
-        <Link href="/password">
-          <FlatButton style = {{
-            backgroundColor: 'white'}} 
-            text={'Forgot Password'} 
-            invert={'y'}
-            />
+        <Link href="/password" style = {{
+            borderRadius: 15,
+            padding: 12, 
+            margin: 10, 
+            width: 280,
+            color: 'black',
+            fontWeight: 'bold',
+            fontSize: 15,
+            textAlign: 'center',
+        }}>
+          Forget Password
           </Link>
-
         <View style = {{flexDirection: 'row', alignItems: 'flex-end',}}>
             <Text style = {[globalStyles.appBodyFont, {fontSize: 15, marginTop: 200}]}>Don't have an account?&nbsp;</Text>
             <Link href="/signUp" style = {{color:'blue', fontFamily: 'Futura-Medium',}}> 

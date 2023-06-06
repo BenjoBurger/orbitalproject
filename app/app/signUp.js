@@ -21,7 +21,7 @@ export default function SignUp() {
 
   return (
     <SafeAreaView style={globalStyles.appBody}>
-      <Button onPress={() => router.back()} title="Login"
+      <Button onPress={() => router.back()} title="Back"
         style={{
           flex: 1,
         }}
