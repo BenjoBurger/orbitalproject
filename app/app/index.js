@@ -1,13 +1,13 @@
-import { Alert, SafeAreaView, Text, View} from 'react-native';
+import {Alert, SafeAreaView, Text, View} from 'react-native';
 import FlatButton from '../custom/Button';
 import { globalStyles } from '../styles/globalStyles';
+import { auth } from '../firebaseconfig';
+import { signOut } from 'firebase/auth';
 import { useRouter } from 'expo-router';
 import { FAB, TextInput } from 'react-native-paper';
 import { useState } from 'react';
-import { auth } from '../firebaseconfig';
-import { signOut } from 'firebase/auth';
 
-export default function Login() {
+export default function Inputs() {
   const router = useRouter();
   const [list, setList] = useState([]);
   const [input, setInput] = useState("");
@@ -26,7 +26,7 @@ export default function Login() {
     }
       setList([...list, newIngredient]);
       setInput("");
-  }
+  };
   
   // const IngredientList = ({ingredient, setIngredients}) => {
   //   return (
@@ -74,7 +74,6 @@ export default function Login() {
           <FlatButton text = {'Logout'} invert = {'n'} onPress={handleSignOut}/>
         </View>
       </View>
-
     </SafeAreaView>
   );
 }
