@@ -4,9 +4,12 @@ import { globalStyles } from '../../styles/globalStyles';
 import { auth } from "../../firebaseconfig"
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 
 export default function Inputs() {
   const router = useRouter();
+  const [list, setList] = useState([]);
+  const [input, setInput] = useState("");
 
   const handleSignOut = () => {
     signOut(auth).then(() => {
@@ -16,31 +19,24 @@ export default function Inputs() {
 }
   return (
     <SafeAreaView style={[globalStyles.container]}>
-      <View style={{flexDirection: 'row'}}>
-        <Pressable 
-          onPress={handleSignOut}
-          >
-          <Text style={{
-            width: 70,
-            fontSize: 15, 
-            color:'blue',
-            fontFamily: 'Futura-Medium',
-            left: 10,
-            }}>
-            Logout
-            </Text>
-        </Pressable>
       <Text style={[globalStyles.appMainTitle,{
+        alignSelf: 'center',
         fontSize: 30, 
         color: 'black',
-        left: 90,
-        bottom: 10,
         }]}> 
-        Inputs! 
+        Ingredients 
         </Text>
+      <View style={[globalStyles.container]}>
+        <TextInput 
+          value={input}
+          onChangeText={(e) => setInput(e.target.value)}
+          />
+        <View style={[globalStyles.appBody, {
+          justifyContent: 'flex-end'
+          }]}>
+        <FlatButton text = {'Create Dishes!'} invert = {'n'} onPress={()=>{router.replace("/dishes")}}/>
+        <FlatButton text = {'Logout'} invert = {'n'} onPress={handleSignOut}/>
         </View>
-      <View style={[globalStyles.appBody]}>
-        <FlatButton text = {'Dishes'} invert = {'n'} onPress={()=>{router.replace("/dishes")}}/>
       </View>
     </SafeAreaView>
   );
