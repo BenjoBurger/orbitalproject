@@ -1,20 +1,19 @@
 import {useEffect, useState} from 'react';
 import {SafeAreaView, Text, View, TextInput, Pressable} from 'react-native';
-import { globalStyles } from '../styles/globalStyles';
+import { globalStyles } from './globalStyles';
 import FlatButton from '../custom/Button';
 import { auth } from '../firebaseconfig';
-import { signInWithEmailAndPassword } from "firebase/auth"; 
-import { Link, useRouter } from 'expo-router';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { Link } from 'expo-router';
 
-export default function Login() {
+export default function Login( {navigation} ) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
-        router.replace("/inputs")
+        navigation.navigate('Inputs')
       } 
     })
     return unsubscribe
@@ -67,27 +66,14 @@ export default function Login() {
           secureTextEntry
           />
 
-        <FlatButton text={'Sign In'} onPress={handleLogin} invert={'n'}/>
-        <Link href="/password" style = {{
-            borderRadius: 15,
-            padding: 12, 
-            margin: 10, 
-            width: 280,
-            color: 'black',
-            fontWeight: 'bold',
-            fontSize: 15,
-            textAlign: 'center',
-        }}>
-          Forget Password
-          </Link>
+        <Link><FlatButton text={'Sign In'} onPress={handleLogin} invert={'n'}/></Link>
+        <FlatButton style = {{backgroundColor: 'white'}} text={'Forgot Password'} onPress={() => navigation.navigate('Password')} invert={'y'}/>
+
         <View style = {{flexDirection: 'row', alignItems: 'flex-end',}}>
-            <Text style = {[globalStyles.appBodyFont, {fontSize: 15, marginTop: 200}]}>Don't have an account?&nbsp;</Text>
-            <Link href="/signUp" style = {{color:'blue', fontFamily: 'Futura-Medium',}}> 
-              Sign Up
-              </Link>
-            {/* <Pressable onPress={() => navigation.navigate('SignUp')}>
+            <Text style = {[globalStyles.appBodyFont, {fontSize: 15, marginTop: 200}]}>Don't have an account?</Text>
+            <Pressable onPress={() => navigation.navigate('SignUp')}>
                 <Text style = {{color:'blue', fontFamily: 'Futura-Medium',}}> Sign Up</Text>
-            </Pressable> */}
+            </Pressable>
         </View>
       </View>
 

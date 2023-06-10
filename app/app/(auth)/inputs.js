@@ -1,4 +1,4 @@
-import {Alert, SafeAreaView, Text, View, Pressable} from 'react-native';
+import {Alert, SafeAreaView, Text} from 'react-native';
 import FlatButton from '../../custom/Button';
 import { globalStyles } from '../../styles/globalStyles';
 import { auth } from "../../firebaseconfig"
@@ -15,33 +15,10 @@ export default function Inputs() {
     .catch(error => Alert.alert(error.message))
 }
   return (
-    <SafeAreaView style={[globalStyles.container]}>
-      <View style={{flexDirection: 'row'}}>
-        <Pressable 
-          onPress={handleSignOut}
-          >
-          <Text style={{
-            width: 70,
-            fontSize: 15, 
-            color:'blue',
-            fontFamily: 'Futura-Medium',
-            left: 10,
-            }}>
-            Logout
-            </Text>
-        </Pressable>
-      <Text style={[globalStyles.appMainTitle,{
-        fontSize: 30, 
-        color: 'black',
-        left: 90,
-        bottom: 10,
-        }]}> 
-        Inputs! 
-        </Text>
-        </View>
-      <View style={[globalStyles.appBody]}>
-        <FlatButton text = {'Dishes'} invert = {'n'} onPress={()=>{router.replace("/dishes")}}/>
-      </View>
+    <SafeAreaView style={[globalStyles.appBody]}>
+      <Text> Inputs! </Text>
+      <FlatButton text = {'Dishes'} invert = {'n'} onPress={()=>{router.replace("/dishes")}}/>
+      <FlatButton text={'Logout'} onPress={handleSignOut} invert={'n'}/>
     </SafeAreaView>
   );
 }
