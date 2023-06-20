@@ -82,7 +82,6 @@ export default function Login() {
           {fontSize: 35, fontWeight: '700', alignSelf: 'center', marginVertical: 15,}]}>
           Login
           </Text>
-
         <TextInput 
           style = {globalStyles.userInputs} 
           autoCapitalize='none' 
