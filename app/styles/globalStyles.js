@@ -52,6 +52,18 @@ export const globalStyles = StyleSheet.create({
         width: 280,
     },
 
+    // --- Input --- //
+    ingredientsCard: {
+        width: '90%',
+        padding: 5,
+        margin: 5,
+    },
+
+    dishesCard: {
+        width: '90%',
+        padding: 5,
+        margin: 5,
+    },
     // ### Fonts ### //
 
     // --- Login --- //

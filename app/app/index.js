@@ -1,164 +1,116 @@
-import {Alert, SafeAreaView, Text, View} from 'react-native';
-import FlatButton from '../custom/Button';
+import { useEffect, useState } from 'react';
+import { SafeAreaView, Text, View, TextInput, Alert } from 'react-native';
 import { globalStyles } from '../styles/globalStyles';
+import FlatButton from '../custom/Button';
 import { auth } from '../firebaseconfig';
-import { signOut } from 'firebase/auth';
-import { useRouter } from 'expo-router';
-import { FAB, TextInput } from 'react-native-paper';
-import { useState } from 'react';
+import { signInWithEmailAndPassword } from "firebase/auth"; 
+import { Link, useRouter } from 'expo-router';
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from "expo-auth-session/providers/google";
 
-export default function Inputs() {
+WebBrowser.maybeCompleteAuthSession();
+
+export default function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const router = useRouter();
-  const [list, setList] = useState([]);
-  const [input, setInput] = useState("");
+  const [accessToken, setAccessToken] = useState("");
+  const [userInfo, setUserInfo] = useState(null);
 
-  const handleSignOut = () => {
-    signOut(auth).then(() => {
-      router.replace('/')
-    })
-    .catch(error => Alert.alert(error.message))
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    //iosClientId : "330002817844-obhdei0qtbfqro1vmbl592cq8923ah5c.apps.googleusercontent.com",
+    expoClientId : "330002817844-gcndolvp2hu7e71o0l4t3ak73658p1ss.apps.googleusercontent.com",
+    webClientId : "330002817844-gcndolvp2hu7e71o0l4t3ak73658p1ss.apps.googleusercontent.com",
+    scopes: ['profile', 'email'],
+  });
+
+  const handleLogin = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        router.replace("/inputs")
+      })
+      .catch((error) => Alert.alert(error.message))
+    };
+
+  const handlePassword = () => {
+    router.replace("/password");
   }
 
-  const addIngredient = (ingredient) => {
-    const newIngredient = {
-      id: 1,
-      ingredient: ingredient,
+  useEffect(() => {
+    if (response?.type === "success") {
+      setAccessToken(response.authentication.accessToken);
+      getUserInfo();
     }
-      setList([...list, newIngredient]);
-      setInput("");
-  };
+    else{
+      console.log(response?.type);
+    }
+  }, [response, accessToken]);
   
-  // const IngredientList = ({ingredient, setIngredients}) => {
-  //   return (
 
-  //   )
-  // }
+  const getUserInfo = async () => {
+    try {
+      const response = await fetch(
+        "https://www.googleapis.com/userinfo/v2/me",
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
+
+      const user = await response.json();
+      setUserInfo(user);
+      router.replace("/inputs");
+    } catch (error) {
+      console.log("userInfo error");
+    }
+  };
+
 
   return (
-    <SafeAreaView style={[globalStyles.container]}>
-      <Text style={[globalStyles.appMainTitle,{
-        alignSelf: 'center',
-        fontSize: 30, 
-        color: 'black',
-        }]}> 
-        Ingredients 
-        </Text>
-      <View style={[globalStyles.container, {
-        }]}>
-        <View>
-        </View>
-        <View style={[globalStyles.appBody, {
-          justifyContent: 'flex-end'
-          }]}>
-          <View style={{flexDirection: 'row'}}>
-            <TextInput style={{
-              alignItems: 'center',
-              width: '60%',
-              }}
-              mode='outlined'
-              placeholder='Add Ingredients'
-              value={input}
-              onChangeText={(e) => setInput(e.target.value)}
-            />
-            <FAB
-              style={{
-                margin: 4,
-                backgroundColor: '#888'
-              }}
-              color='white'
-              icon='plus'
-              onPress={()=> addIngredient(input)}
-              />
-          </View>
-          <FlatButton text = {'Create Dishes!'} invert = {'n'} onPress={()=>{router.replace("/dishes")}}/>
-          <FlatButton text = {'Logout'} invert = {'n'} onPress={handleSignOut}/>
+    <SafeAreaView style = {globalStyles.container}>
+
+      <View style = {globalStyles.appHeader}>
+        <Text style = {globalStyles.appMainTitle}>FOOD4THOUGHT</Text>
+      </View>
+
+      <View style = {globalStyles.appBody}>
+        <Text style = {globalStyles.appBodyFont}> Say hello to endless culinary possibilities! </Text>
+      </View>
+
+      <View style = {globalStyles.appLogin}>
+        <Text style = {[globalStyles.appBodyFont, 
+          {fontSize: 35, fontWeight: '700', alignSelf: 'center', marginVertical: 15,}]}>
+          Login
+          </Text>
+
+        <TextInput 
+          style = {globalStyles.userInputs} 
+          autoCapitalize='none' 
+          keyboardType = 'email-address' 
+          placeholder='Email' 
+          value={email}
+          onChangeText={text => setEmail(text)} 
+          />
+        <TextInput 
+          style = {globalStyles.userInputs} 
+          blurOnSubmit = {true}  
+          placeholder='Password'
+          value={password}
+          onChangeText={text => setPassword(text)}
+          secureTextEntry
+        />
+
+        <FlatButton text={'Sign In'} onPress={handleLogin} invert={'n'} disabled={false}/>
+        <FlatButton text={'Sign In with Google'} onPress = {() => promptAsync()} invert={'n'} disabled={false}/>
+        <FlatButton text={'Forget Password'} onPress={handlePassword} invert={'y'} disabled={false}/>
+        <View style = {{flexDirection: 'row', alignItems: 'flex-end',}}>
+            <Text style = {[globalStyles.appBodyFont, {fontSize: 15, marginTop: 200}]}>Don't have an account?&nbsp;</Text>
+            <Link href="/signUp" style = {{color:'blue', fontFamily: 'Futura-Medium',}}> 
+              Sign Up
+              </Link>
         </View>
       </View>
+
     </SafeAreaView>
   );
 }
-
-// import {useEffect, useState} from 'react';
-// import {SafeAreaView, Text, View, TextInput, Alert} from 'react-native';
-// import { globalStyles } from '../styles/globalStyles';
-// import FlatButton from '../custom/Button';
-// import { auth } from '../firebaseconfig';
-// import { signInWithEmailAndPassword } from "firebase/auth"; 
-// import { Link, useRouter } from 'expo-router';
-
-// export default function Login() {
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const router = useRouter();
-
-//   useEffect(() => {
-//     const unsubscribe = auth.onAuthStateChanged(user => {
-//       if (user) {
-//         router.replace("/inputs")
-//       } 
-//     })
-//     return unsubscribe
-//   }, [])
-
-//   const handleLogin = () => {
-//     signInWithEmailAndPassword(auth, email, password)
-//       .catch((error) => Alert.alert(error.message))
-//     };
-
-//   return (
-//     <SafeAreaView style = {globalStyles.container}>
-
-//       <View style = {globalStyles.appHeader}>
-//         <Text style = {globalStyles.appMainTitle}>FOOD4THOUGHT</Text>
-//       </View>
-
-//       <View style = {globalStyles.appBody}>
-//         <Text style = {globalStyles.appBodyFont}> Say hello to endless culinary possibilities! </Text>
-//       </View>
-
-//       <View style = {globalStyles.appLogin}>
-//         <Text style = {[globalStyles.appBodyFont, 
-//           {fontSize: 35, fontWeight: '700', alignSelf: 'center', marginVertical: 15,}]}>
-//           Login
-//           </Text>
-//         <TextInput 
-//           style = {globalStyles.userInputs} 
-//           autoCapitalize='none' 
-//           keyboardType = 'email-address' 
-//           placeholder='Email' 
-//           value={email}
-//           onChangeText={text => setEmail(text)} 
-//           />
-//         <TextInput 
-//           style = {globalStyles.userInputs} 
-//           blurOnSubmit = {true}  
-//           placeholder='Password'
-//           value={password}
-//           onChangeText={text => setPassword(text)}
-//           secureTextEntry
-//           />
-
-//         <FlatButton text={'Sign In'} onPress={handleLogin} invert={'n'}/>
-//         <Link href="/password" style = {{
-//             borderRadius: 15,
-//             padding: 12, 
-//             margin: 10, 
-//             width: 280,
-//             color: 'black',
-//             fontWeight: 'bold',
-//             fontSize: 15,
-//             textAlign: 'center',
-//         }}>
-//           Forget Password
-//           </Link>
-//         <View style = {{flexDirection: 'row', alignItems: 'flex-end',}}>
-//             <Text style = {[globalStyles.appBodyFont, {fontSize: 15, marginTop: 200}]}>Don't have an account?&nbsp;</Text>
-//             <Link href="/signUp" style = {{color:'blue', fontFamily: 'Futura-Medium',}}> 
-//               Sign Up
-//               </Link>
-//         </View>
-//       </View>
-
-//     </SafeAreaView>
-//   );
-// }
