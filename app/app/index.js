@@ -1,3 +1,16 @@
+// import { View } from 'react-native';
+// import { Text, Button, Checkbox } from 'react-native-paper';
+// import FlatButton from '../custom/Button'
+// import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
+// import { SafeAreaProvider } from 'react-native-safe-area-context';
+// import { globalStyles } from '../styles/globalStyles';
+// import { useRouter } from 'expo-router';
+// import { collection, getDocs, query, where, onSnapshot } from 'firebase/firestore';
+// import { firestoredb } from '../firebaseconfig'
+// import { Drawer } from 'react-native-drawer-layout';
+// import { useState, useEffect } from 'react';
+// import Slider from '@react-native-community/slider';
+
 import { useEffect, useState } from 'react';
 import { SafeAreaView, Text, View, TextInput, Alert } from 'react-native';
 import { globalStyles } from '../styles/globalStyles';
