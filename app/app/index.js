@@ -103,7 +103,7 @@ export default function Login() {
         <FlatButton text={'Sign In with Google'} onPress = {() => promptAsync()} invert={'n'} disabled={false}/>
         <FlatButton text={'Forget Password'} onPress={handlePassword} invert={'y'} disabled={false}/>
         <View style = {{flexDirection: 'row', alignItems: 'flex-end',}}>
-            <Text style = {[globalStyles.appBodyFont, {fontSize: 15, marginTop: 200}]}>Don't have an account?&nbsp;</Text>
+            <Text style = {[globalStyles.appBodyFont, {fontSize: 15, marginTop: 200}]}>Don&apos;t have an account?&nbsp;</Text>
             <Link href="/signUp" style = {{color:'blue', fontFamily: 'Futura-Medium',}}> 
               Sign Up
               </Link>
