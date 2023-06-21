@@ -61,7 +61,7 @@ export const globalStyles = StyleSheet.create({
     },
 
     dishesCard: {
-        width: '90%',
+        width: 400,
         padding: 5,
         margin: 5,
     },

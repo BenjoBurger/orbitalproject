@@ -131,7 +131,7 @@ function DishesScreen() {
           onPress={() => {router.push('/review')}}
           />
         <FlatButton text = {'Back'} invert = {'n'} 
-          onPress={() => router.replace('/')}
+          onPress={() => router.replace('/inputs')}
           />
         </View>
     </View>
