@@ -10,7 +10,6 @@ import { firestoredb } from '../../firebaseconfig';
 import { Drawer } from 'react-native-drawer-layout';
 import { useState, useEffect } from 'react';
 import Slider from '@react-native-community/slider';
-import React from 'react';
 
 const FilterDrawerScreen = (props) => {
   const [dessertsIsChecked, setDessertsIsChecked] = useState(false);
@@ -19,7 +18,6 @@ const FilterDrawerScreen = (props) => {
   const [open, setOpen] = useState(false);
   const [complexity, setComplexity] = useState(10);
   const [categories, setCategories] = useState([]);
-  const [isInitialRender, setIsInitialRender] = useState(true);
   const { navigation } = props;
   
   function CategoryFilter(props) {
@@ -76,11 +74,6 @@ const FilterDrawerScreen = (props) => {
     setCategories(updatedCategories)
   }
   useEffect(() => {
-    if (isInitialRender) {
-      setIsInitialRender(false);
-      return;
-    }
-    console.log(complexity)
     navigation.navigate('Dishes', { categories: categories, complexity: complexity });
   }, [categories]);
 
@@ -185,7 +178,7 @@ const DishesScreen = ({ route }) => {
           onPress={() => {router.push('/review')}}
           />
         <FlatButton text = {'Back'} invert = {'n'} 
-          onPress={() => router.replace('/inputs')}
+          onPress={() => router.replace('/')}
           />
         </View>
     </View>
@@ -194,7 +187,7 @@ const DishesScreen = ({ route }) => {
 
 const DrawerNav = createDrawerNavigator();
 
-const FilterDrawer = ({route, navigation}) => {
+const FilterDrawer = () => {
   return (
     <DrawerNav.Navigator
     screenOptions={{

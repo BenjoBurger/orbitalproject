@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import { Card } from "react-native-paper";
 
 export const globalStyles = StyleSheet.create({
     // ### Formatting ### //

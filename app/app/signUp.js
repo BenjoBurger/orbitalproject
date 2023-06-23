@@ -1,9 +1,11 @@
-import { SafeAreaView, Text, TextInput, Button, Alert } from 'react-native';
+import { SafeAreaView, Text, TextInput, View, Alert } from 'react-native';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebaseconfig';
 import { globalStyles } from '../styles/globalStyles';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
+import FlatButton from '../custom/Button';
+import { IconButton } from 'react-native-paper'
 
 export default function SignUp() {
   const [email, setEmail] = useState('');
@@ -21,33 +23,32 @@ export default function SignUp() {
 
   return (
     <SafeAreaView style={globalStyles.appBody}>
-      <Button onPress={() => router.back()} title="Back"
-        style={{
-          flex: 1,
-        }}
-        />
-      <Text 
-        style = {[globalStyles.appBodyFont, {
-          fontSize: 35, fontWeight: '700', alignSelf: 'center', marginVertical: 15
-          }]}>
-        Create Account
+      <IconButton style = {{flex:1, alignSelf:'flex-start', marginLeft: 20}} icon='arrow-left' size = {35} onPress={()=>{router.replace('/')}}/>
+      <View style={{flex:9 ,justifyContent:'center', marginBottom: 170}}>
+        <IconButton icon='account-circle' style = {{justifyContent:'center' ,alignSelf:'center'}} size={70} />
+        <Text
+          style = {[globalStyles.appBodyFont, {
+            fontSize: 35, fontWeight: '700', alignSelf: 'center', marginVertical: 30
+            }]}>
+          Create Account
         </Text>
-      <TextInput 
-        style = {globalStyles.userInputs} 
-        autoCapitalize='none' 
-        keyboardType = 'email-address' 
-        placeholder='Email' 
-        value={email}
-        onChangeText={text => setEmail(text)} 
-      />
-      <TextInput 
-        style = {globalStyles.userInputs} 
-        autoCapitalize='none' 
-        placeholder='Password' 
-        value={password}
-        onChangeText={text => setPassword(text)} 
+        <TextInput 
+          style = {globalStyles.userInputs} 
+          autoCapitalize='none' 
+          keyboardType = 'email-address' 
+          placeholder='Email' 
+          value={email}
+          onChangeText={text => setEmail(text)} 
         />
-      <Button onPress={handleSignUp} title='Sign Up'></Button>
+        <TextInput 
+          style = {globalStyles.userInputs} 
+          autoCapitalize='none' 
+          placeholder='Password' 
+          value={password}
+          onChangeText={text => setPassword(text)} 
+          />
+        <FlatButton text='Sign Up' onPress={handleSignUp} invert='n'/>
+      </View>
     </SafeAreaView>
   );
 }
