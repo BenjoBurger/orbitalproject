@@ -6,11 +6,13 @@ import { signOut } from 'firebase/auth';
 import { useRouter } from 'expo-router';
 import { FAB, Card, Button, IconButton} from 'react-native-paper';
 import { useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Review from './review';
+import DishesApp from './dishes';
 
-
-export default function Inputs() {
+function Inputs({ navigation }) {
   const router = useRouter();
-
   const [inputs, setInputs] = useState();
   const [ingredients, setIngredients] = useState([]);
 
@@ -61,7 +63,7 @@ export default function Inputs() {
         buttonColor='#fff' textColor='black' onPress={handleSignOut} compact={true} >
           Logout
         </Button>
-        <Button onPress={() => router.push('/dishes')}>Dishes</Button>
+        <Button onPress={() => navigation.navigate('DishesApp', {ingredients: ingredients})}>Dishes</Button>
         <Text style={[globalStyles.appMainTitle,{
           alignSelf: 'center',
           fontSize: 30, 
@@ -124,5 +126,26 @@ export default function Inputs() {
       </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
     </SafeAreaView>
+  );
+}
+
+const Stack = createStackNavigator();
+
+const linking = {
+  prefixes: [
+  ],
+  config: {
+  },
+};
+
+export default () => {
+  return (
+    <NavigationContainer linking={linking} independent={true}>
+      <Stack.Navigator>
+        <Stack.Screen name="Inputs" component={Inputs} options={{headerShown: false}}/>
+        <Stack.Screen name="DishesApp" component={DishesApp} options={{headerShown: false}}/>
+        <Stack.Screen name="Review" component={Review} options={{headerShown: false}}/>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
