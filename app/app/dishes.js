@@ -1,12 +1,11 @@
 import { View, ScrollView, Alert } from 'react-native';
 import { Text, Button, Checkbox, Card } from 'react-native-paper';
-import FlatButton from '../../custom/Button';
+import FlatButton from '../custom/Button';
 import { createDrawerNavigator, DrawerContentScrollView } from '@react-navigation/drawer';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { globalStyles } from '../../styles/globalStyles';
-import { useRouter } from 'expo-router';
+import { globalStyles } from '../styles/globalStyles';
 import { collection, getDocs, query, where, and } from 'firebase/firestore';
-import { firestoredb } from '../../firebaseconfig';
+import { firestoredb } from '../firebaseconfig';
 import { Drawer } from 'react-native-drawer-layout';
 import { useState, useEffect } from 'react';
 import Slider from '@react-native-community/slider';
@@ -129,8 +128,7 @@ const DishCard = (props) => {
   )
 }
 
-const DishesScreen = ({ route }) => {
-  const router = useRouter();
+const DishesScreen = ({ route, navigation }) => {
   const navRoute = useRoute();
   const dishesRef = collection(firestoredb, 'dishes')
   const [dishes, setDishes] = useState([]);
@@ -139,7 +137,6 @@ const DishesScreen = ({ route }) => {
   const lower = ingredients.map(element => {
     return element.toLowerCase();
   });
-  console.log(lower)
 
   useEffect(() => {
     if (categories === undefined || categories.length === 0) {
@@ -181,10 +178,10 @@ const DishesScreen = ({ route }) => {
           justifyContent: 'flex-end'
         }}>
         <FlatButton text = {'Reviews'} invert = {'n'} 
-          onPress={() => {router.push('/review')}}
+          onPress={() => navigation.navigate("Reviews")}
           />
         <FlatButton text = {'Back'} invert = {'n'} 
-          onPress={() => router.replace('/')}
+          onPress={() => navigation.navigate("Inputs")}
           />
         </View>
     </View>
@@ -193,7 +190,7 @@ const DishesScreen = ({ route }) => {
 
 const DrawerNav = createDrawerNavigator();
 
-export default function DishesApp({ navigation }) {
+export default function DishesApp() {
   const route = useRoute()
   const ingredients = route.params?.ingredients
 

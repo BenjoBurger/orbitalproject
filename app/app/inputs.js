@@ -1,18 +1,12 @@
 import { Alert, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, Text, 
   TouchableWithoutFeedback, View , TextInput, ScrollView} from 'react-native';
-import { globalStyles } from '../../styles/globalStyles';
-import { auth } from "../../firebaseconfig"
+import { globalStyles } from '../styles/globalStyles';
+import { auth } from "../firebaseconfig"
 import { signOut } from 'firebase/auth';
-import { useRouter } from 'expo-router';
 import { FAB, Card, Button, IconButton} from 'react-native-paper';
 import { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import Review from './review';
-import DishesApp from './dishes';
 
-function Inputs({ navigation }) {
-  const router = useRouter();
+export default function Inputs({ navigation }) {
   const [inputs, setInputs] = useState();
   const [ingredients, setIngredients] = useState([]);
 
@@ -53,7 +47,7 @@ function Inputs({ navigation }) {
   const handleSignOut = () => {
     Keyboard.dismiss();
     signOut(auth).then(() => {
-      router.replace('/')
+      navigation.navigate("Login")
     })
     .catch(error => Alert.alert(error.message))
   }
@@ -126,26 +120,5 @@ function Inputs({ navigation }) {
       </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
     </SafeAreaView>
-  );
-}
-
-const Stack = createStackNavigator();
-
-const linking = {
-  prefixes: [
-  ],
-  config: {
-  },
-};
-
-export default () => {
-  return (
-    <NavigationContainer linking={linking} independent={true}>
-      <Stack.Navigator>
-        <Stack.Screen name="Inputs" component={Inputs} options={{headerShown: false}}/>
-        <Stack.Screen name="DishesApp" component={DishesApp} options={{headerShown: false}}/>
-        <Stack.Screen name="Review" component={Review} options={{headerShown: false}}/>
-      </Stack.Navigator>
-    </NavigationContainer>
   );
 }
